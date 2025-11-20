@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GROUP 5</title>
-  <meta name="description" content="Trang thông tin nhóm 5 - danh sách thành viên và bài tập" />
+  <title>GROUP 4</title> <meta name="description" content="Trang thông tin nhóm 4 - danh sách thành viên và bài tập" />
   <style>
     :root{
       --bg:#f5f8ff; --card:#ffffff; --accent:#60a5fa; --muted:#475569; --glass: rgba(2,6,23,0.04);
@@ -33,7 +32,27 @@
     .section-title h2{margin:0; font-size:16px}
 
     .members{display:flex; flex-direction:column; gap:10px}
-    .member{display:flex; gap:12px; align-items:center}
+    
+    /* CSS MỚI: Tạo hiệu ứng cao cấp/link cho từng thành viên */
+    .member {
+        display: block; /* Điều chỉnh để bao bọc link */
+    }
+    .member a.member-link {
+        display: flex; /* Giữ layout ngang */
+        gap: 12px;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+        padding: 6px 8px; /* Tăng diện tích nhấp */
+        margin: -6px -8px; /* Mở rộng vùng hover */
+        border-radius: 12px;
+        transition: background-color 0.2s ease-in-out;
+    }
+    .member a.member-link:hover {
+        background: var(--glass); /* Hiệu ứng hover tinh tế */
+    }
+    /* END CSS MỚI */
+    
     .avatar{width:56px; height:56px; border-radius:10px; background:var(--glass); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--accent)}
     .member .meta{line-height:1}
     .member .meta .name{font-weight:600}
@@ -80,16 +99,14 @@
           <\/div>
 
           <div class="members" id="members">
-            <!-- members inserted by JS -->
-          </div>
+            </div>
 
         </div>
 
         <div class="card" style="margin-top:16px">
           <div class="section-title"><h2>VẬN DỤNG</h2><span class="muted">Bài tập & tài liệu</span></div>
           <div class="list-links" id="links">
-            <!-- links injected by JS -->
-          </div>
+            </div>
 
           <p class="footer-note">Một số bài dẫn tới trang Canva (thiết kế). Nhấn vào từng ô để mở.</p>
         </div>
@@ -118,16 +135,16 @@
       </aside>
     </main>
 
-    <footer style="margin-top:22px; text-align:center" class="muted">© GROUP 5 • Thiết kế mẫu — sửa và dùng cho môn học</footer>
-  </div>
+    <footer style="margin-top:22px; text-align:center" class="muted">© GROUP 4 • Thiết kế mẫu — sửa và dùng cho môn học</footer> </div>
 
   <script>
+    // Dữ liệu thành viên: ĐÃ THÊM trường 'profile'
     const members = [
-      {name: 'Nguyễn Huỳnh Đăng Thư', cls: '12 Văn'},
-      {name: 'Trần Lê Yến Như', cls: '12 Văn'},
-      {name: 'Nguyễn Phạm Quế Anh', cls: '12 Văn'},
-      {name: 'Nguyễn Huỳnh Ngọc Châu', cls: '12 Văn'},
-      {name: 'Đỗ Quốc Việt', cls: '12 Văn'}
+      {name: 'Nguyễn Huỳnh Đăng Thư', cls: '12 Văn', profile: '#'}, // THAY '#' bằng link profile cá nhân
+      {name: 'Trần Lê Yến Như', cls: '12 Văn', profile: '#'},
+      {name: 'Nguyễn Phạm Quế Anh', cls: '12 Văn', profile: '#'},
+      {name: 'Nguyễn Huỳnh Ngọc Châu', cls: '12 Văn', profile: '#'},
+      {name: 'Đỗ Quốc Việt', cls: '12 Văn', profile: '#'}
     ];
 
     const links = [
@@ -150,11 +167,18 @@
 
     const membersEl = document.getElementById('members');
     members.forEach(m =>{
-      const div = document.createElement('div'); div.className='member';
+      const div = document.createElement('div'); div.className='member'; 
+      
+      // LOGIC MỚI: Tạo thẻ <a> bao bọc thông tin thành viên
+      const a = document.createElement('a'); a.className='member-link'; a.href = m.profile; a.target = '_blank';
+
       const avatar = document.createElement('div'); avatar.className='avatar'; avatar.textContent = initials(m.name);
       const meta = document.createElement('div'); meta.className='meta';
       meta.innerHTML = `<div class="name">${m.name}</div><div class="class">${m.cls}</div>`;
-      div.appendChild(avatar); div.appendChild(meta); membersEl.appendChild(div);
+      
+      a.appendChild(avatar); a.appendChild(meta); // Chèn Avatar và Meta vào thẻ <a>
+      div.appendChild(a); // Chèn thẻ <a> vào thẻ div.member
+      membersEl.appendChild(div);
     });
 
     const linksEl = document.getElementById('links');
